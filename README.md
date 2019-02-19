@@ -1,8 +1,8 @@
-### Airbnb Clone
+## Airbnb Clone
 
-## Description
+### Description
 Web app built with React, Node and MySql.
 
-## Technologies Used
+### Technologies Used
 
 React | Node | MySql | Stripe | Aws
