@@ -1,6 +1,9 @@
 @import "variables.scss";
 @import "navbar/navbar.scss";
+@import "listings/rental-listing.scss";
 
-body {
-  color: $main-color;
+.page-title {
+  font-size: 30px;
+  font-weight: 700;
+  margin-bottom: 20px;
 }

@@ -11,7 +11,7 @@ const Navbar = () => {
           <input
             className="form-control mr-sm-2 bwm-search"
             type="search"
-            placeholder="Try "
+            placeholder="Try 'New York'"
             aria-label="Search"
           />
           <button
