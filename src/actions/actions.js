@@ -1,5 +1,8 @@
-import { FETCH_RENTALS } from "./types";
-import { FETCH_RENTAL_BY_ID } from "./types";
+import {
+  FETCH_RENTALS,
+  FETCH_RENTAL_BY_ID_SUCCESS,
+  FETCH_RENTAL_BY_ID_INIT
+} from "./types";
 
 const rentals = [
   {
@@ -56,16 +59,34 @@ const rentals = [
   }
 ];
 
+function fetchRentalByIdInit() {
+  return {
+    type: FETCH_RENTAL_BY_ID_INIT
+  };
+}
+
+const fetchRentalByIdSuccess = rental => {
+  return {
+    type: FETCH_RENTAL_BY_ID_SUCCESS,
+    rental
+  };
+};
+
 export const fetchRentals = () => {
   return {
     type: FETCH_RENTALS,
-    rentals: rentals
+    rentals
   };
 };
 
 export const fetchRentalById = rentalId => {
-  // const rental;
-  return {
-    type: FETCH_RENTAL_BY_ID
+  return function(dispatch) {
+    dispatch(fetchRentalByIdInit());
+    // Send Request To Server, Async Code
+    setTimeout(() => {
+      const rental = rentals.find(rental => rental.id === rentalId);
+
+      dispatch(fetchRentalByIdSuccess(rental));
+    }, 1000);
   };
 };

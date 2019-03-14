@@ -1,15 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-export default function Listings({ rental }) {
+export default function RentalCard({ rental }) {
   console.log(rental);
   return (
     <div className="col-md-3 col-xs-6">
-      <Link to={`/rentals/${rental.id}`}>
+      <Link className="rental-detail-link" to={`/rentals/${rental.id}`}>
         <div className="card bwm-card">
-          <img className="card-img-top" src={rental.image} alt="" />
+          <img className="card-img-top" src={rental.image} alt={rental.title} />
           <div className="card-block">
-            <h6 className="card-subtitle">
+            <h6 className={`card-subtitle ${rental.category}`}>
               {rental.shared ? "shared" : "whole"} {rental.category} ·{" "}
               {rental.city}
             </h6>
