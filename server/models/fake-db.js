@@ -4,7 +4,7 @@ class FakeDb {
   constructor() {
     this.rentals = [
       {
-        title: "Nice view on ocean",
+        title: "Nice view of ocean",
         city: "San Francisco",
         street: "Main street",
         category: "condo",
