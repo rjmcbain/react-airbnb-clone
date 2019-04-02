@@ -5,28 +5,32 @@ import {
   withScriptjs,
   withGoogleMap,
   GoogleMap,
-  // Marker,
   Circle,
   InfoWindow
 } from "react-google-maps";
 
 function MapComponent(props) {
-  const { coordinates, isError } = props;
+  const { coordinates, isError, isLocationLoaded } = props;
   return (
     <GoogleMap
       defaultZoom={13}
       defaultCenter={coordinates}
       center={coordinates}
+      options={{ disableDefaultUI: isError ? true : false }}
     >
-      {<Circle center={coordinates} radius={500} />}{" "}
-      <InfoWindow position={coordinates}>
-        <div>
-          Oops, there is a problem finding your location on the map. We are
-          trying to resolve this problem as fast as possible. Contact host for
-          additional information if you are still interested in booking this
-          place. We are sorry for any inconiviance.
-        </div>
-      </InfoWindow>
+      {isLocationLoaded && !isError && (
+        <Circle center={coordinates} radius={500} />
+      )}
+      {isLocationLoaded && isError && (
+        <InfoWindow position={coordinates} options={{ maxWidth: 300 }}>
+          <div>
+            Oops, there is a problem finding your location on the map. We are
+            trying to resolve this problem as fast as possible. Contact host for
+            additional information if you are still interested in booking this
+            place. We are sorry for any inconiviance.
+          </div>
+        </InfoWindow>
+      )}
     </GoogleMap>
   );
 }
@@ -39,12 +43,21 @@ function withGeocode(WrappedComponent) {
         lat: 0,
         lng: 0
       },
-      isError: false
+      isError: false,
+      isLocationLoaded: false
     };
 
     componentWillMount() {
       this.getGeocodedLocation();
     }
+
+    updateCoordinates(coordinates) {
+      this.setState({
+        coordinates,
+        isLocationLoaded: true
+      });
+    }
+
     geocodeLocation(location) {
       const geocoder = new window.google.maps.Geocoder();
       return new Promise((resolve, reject) => {
@@ -61,21 +74,18 @@ function withGeocode(WrappedComponent) {
       });
     }
     getGeocodedLocation() {
-      // const location = this.props.location;
-      const location = "123gfjhgf";
+      const location = this.props.location;
 
       // If location is cached return cached values
       if (this.cacher.isValueCached(location)) {
-        this.setState({ coordinates: this.cacher.getCachedValue(location) });
+        this.updateCoordinates(this.cacher.getCachedValue(location));
       } else {
         this.geocodeLocation(location).then(
           coordinates => {
-            this.setState({
-              coordinates
-            });
+            this.updateCoordinates(coordinates);
           },
           error => {
-            this.setState({ isError: true });
+            this.setState({ isLocationLoaded: true, isError: true });
           }
         );
       }
