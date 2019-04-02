@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { rentalType } from "../../../helpers";
 
 export default function RentalCard({ rental }) {
-  console.log(rental);
+  // console.log(rental);
   return (
     <div className="col-md-3 col-xs-6">
       <Link className="rental-detail-link" to={`/rentals/${rental._id}`}>
