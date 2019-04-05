@@ -1,5 +1,6 @@
 @import "variables.scss";
 @import "navbar/navbar.scss";
+@import "form/form.scss";
 @import "listings/rental-listing.scss";
 @import "listings/rental-detail.scss";
 
@@ -19,4 +20,19 @@
 
 .condo {
   color: #d68000;
+}
+
+.btn-bwm {
+  background-color: $main-color;
+  border-color: $main-color;
+  color: white;
+  padding: 5px 30px;
+  font-size: 20px;
+
+  &:hover,
+  &:focus,
+  &:active {
+    border-color: $main-color !important;
+    background-color: $main-color !important;
+  }
 }
