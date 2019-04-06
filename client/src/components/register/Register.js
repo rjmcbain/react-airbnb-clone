@@ -1,10 +1,43 @@
 import React, { Component } from "react";
 import RegisterForm from "./RegisterForm";
+import { Redirect } from "react-router-dom";
+
+import * as actions from "../../actions/actions";
 
 class Register extends Component {
-  registerUser(userData) {}
+  constructor() {
+    super();
+
+    this.state = {
+      errors: [],
+      redirect: false
+    };
+    this.registerUser = this.registerUser.bind(this);
+  }
+
+  registerUser(userData) {
+    actions.register(userData).then(
+      registered => {
+        this.setState({ redirect: true });
+      },
+      errors => {
+        this.setState({
+          errors
+        });
+      }
+    );
+  }
 
   render() {
+    const { errors, redirect } = this.state;
+    if (redirect) {
+      return (
+        <Redirect
+          to={{ pathname: "/login", state: { successRegister: true } }}
+        />
+      );
+    }
+
     return (
       <div>
         <section id="register">
@@ -12,9 +45,9 @@ class Register extends Component {
             <div className="row">
               <div className="col-md-5">
                 <h1>Register</h1>
-                <RegisterForm submitCb={this.registerUser} />
+                <RegisterForm submitCb={this.registerUser} errors={errors} />
               </div>
-              <div className="col-md-6 ml-auto">
+              {/* <div className="col-md-6 ml-auto">
                 <div className="image-container">
                   <h2 className="catchphrase">
                     As our member you have access to most awesome places in the
@@ -22,7 +55,7 @@ class Register extends Component {
                   </h2>
                   <img src="" alt="" />
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </section>

@@ -1,9 +1,10 @@
 import React from "react";
 import { Field, reduxForm } from "redux-form";
 import { BwmInput } from "../../components/shared/form/BwmInput";
+import BwmResError from "../shared/form/BwmResError";
 
 const RegisterForm = props => {
-  const { handleSubmit, pristine, reset, submitting, submitCb, valid } = props;
+  const { handleSubmit, pristine, submitting, submitCb, valid, errors } = props;
   return (
     <form onSubmit={handleSubmit(submitCb)}>
       <Field
@@ -45,6 +46,7 @@ const RegisterForm = props => {
       >
         Submit
       </button>
+      <BwmResError errors={errors} />
     </form>
   );
 };
