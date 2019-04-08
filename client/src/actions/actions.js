@@ -1,11 +1,17 @@
 import axios from "axios";
+import authService from "../services/auth-service.js";
+import axiosService from "../services/axios-service";
+
 import {
   FETCH_RENTAL_BY_ID_SUCCESS,
   FETCH_RENTAL_SUCCESS,
   FETCH_RENTAL_BY_ID_INIT,
   LOGIN_FAILURE,
-  LOGIN_SUCCESS
+  LOGIN_SUCCESS,
+  LOGOUT
 } from "./types";
+
+const axiosInstance = axiosService.getInstance();
 
 function fetchRentalByIdInit() {
   return {
@@ -28,8 +34,8 @@ const fetchRentalsSuccess = rentals => {
 
 export const fetchRentals = () => {
   return dispatch => {
-    axios
-      .get("/api/v1/rentals")
+    axiosInstance
+      .get("/rentals")
       .then(res => {
         return res.data;
       })
@@ -53,6 +59,19 @@ export const fetchRentalById = rentalId => {
 
 // Auth Action ----------------
 
+const loginSuccess = () => {
+  return {
+    type: LOGIN_SUCCESS
+  };
+};
+
+const loginFailure = errors => {
+  return {
+    type: LOGIN_FAILURE,
+    errors
+  };
+};
+
 export const register = userData => {
   return axios.post("/api/v1/users/register", { ...userData }).then(
     res => {
@@ -64,17 +83,11 @@ export const register = userData => {
   );
 };
 
-const loginSuccess = token => {
-  return {
-    type: LOGIN_SUCCESS,
-    token
-  };
-};
-
-const loginFailure = errors => {
-  return {
-    type: LOGIN_FAILURE,
-    errors
+export const checkAuthState = () => {
+  return dispatch => {
+    if (authService.isAuthenticated()) {
+      dispatch(loginSuccess());
+    }
   };
 };
 
@@ -84,11 +97,19 @@ export const login = userData => {
       .post("/api/v1/users/auth", { ...userData })
       .then(res => res.data)
       .then(token => {
-        localStorage.setItem("auth_token", token);
-        dispatch(loginSuccess(token));
+        authService.saveToken(token);
+        dispatch(loginSuccess());
       })
-      .catch(response => {
+      .catch(({ response }) => {
         dispatch(loginFailure(response.data.errors));
       });
+  };
+};
+
+export const logout = () => {
+  authService.invalidateUser();
+
+  return {
+    type: LOGOUT
   };
 };
