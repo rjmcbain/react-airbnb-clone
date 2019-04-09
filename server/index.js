@@ -7,12 +7,13 @@ const FakeDb = require("./models/fake-db");
 
 const rentalRoutes = require("./routes/rentals");
 const userRoutes = require("./routes/users");
+const bookingRoutes = require("./routes/bookings");
 
 mongoose
   .connect(config.DB_URI, { useNewUrlParser: true })
   .then(() => {
     const fakeDb = new FakeDb();
-    fakeDb.seedDb();
+    // fakeDb.seedDb();
     console.warn("MongoDB Connected");
   })
   .catch(err => console.error(err));
@@ -23,6 +24,7 @@ app.use(bodyParser.json());
 
 app.use("/api/v1/rentals", rentalRoutes);
 app.use("/api/v1/users", userRoutes);
+app.use("/api/v1/bookings", bookingRoutes);
 
 // app.get("/", (req, res) => res.send("Hello World"));
 
