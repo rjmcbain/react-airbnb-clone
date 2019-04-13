@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import RentalDetailInfo from "./RentalDetailInfo";
 import RentalMap from "./RentalMap";
 import Booking from "../../booking/Booking";
+import Spinner from "../../common/Spinner";
 
 import * as actions from "../../../actions/actions";
 
@@ -42,7 +43,7 @@ class RentalDetail extends Component {
         </section>
       );
     } else {
-      return <h1>Loading...</h1>;
+      return <Spinner />;
     }
   }
 }

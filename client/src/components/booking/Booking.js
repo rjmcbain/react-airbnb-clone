@@ -74,7 +74,7 @@ export default class Booking extends Component {
     this.setState({
       proposedBooking: {
         ...this.state.proposedBooking,
-        guests: parseInt(event.target.value)
+        guests: parseInt(event.target.value, 10)
       }
     });
   }
