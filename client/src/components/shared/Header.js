@@ -37,8 +37,7 @@ class Header extends React.Component {
       return (
         <div className="nav-item dropdown">
           <a
-            className="nav-link nav-item dropdown-toggle"
-            href="#"
+            className="nav-link nav-item dropdown-toggle clickable"
             id="navbarDropdownMenuLink"
             data-toggle="dropdown"
             aria-haspopup="true"
@@ -53,10 +52,10 @@ class Header extends React.Component {
             <Link className="dropdown-item" to="/rentals/new">
               Create Rental
             </Link>
-            <Link className="dropdown-item" to="#">
+            <Link className="dropdown-item" to="">
               Manage Rentals
             </Link>
-            <Link className="dropdown-item" to="#">
+            <Link className="dropdown-item" to="">
               Manage Bookings
             </Link>
           </div>
@@ -87,9 +86,7 @@ class Header extends React.Component {
           </button>
           <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div className="navbar-nav ml-auto">
-              {isAuth && (
-                <a className="nav-item nav-link">{this.props.auth.username}</a>
-              )}
+              {isAuth && <a className="nav-item nav-link">{username}</a>}
               {this.renderOwnerSection(isAuth)}
               {this.renderAuthButtons(isAuth)}
             </div>

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import RentalList from "./RentalList";
 import { connect } from "react-redux";
+import { toUpperCase } from "../../../helpers/index";
 
 import * as actions from "../../../actions/actions";
 
@@ -36,7 +37,7 @@ class RentalSearchListing extends Component {
       title = errors[0].detail;
     }
     if (data.length > 0) {
-      title = `Your Home in ${searchedCity}`;
+      title = `Your Home in ${toUpperCase(searchedCity)}`;
     }
     return <h1 className="page-title">{title}</h1>;
   }
