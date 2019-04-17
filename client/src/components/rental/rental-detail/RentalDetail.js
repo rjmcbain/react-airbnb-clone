@@ -14,8 +14,8 @@ class RentalDetail extends Component {
   }
 
   render() {
-    const rental = this.props.rental;
-    // console.log(this.props);
+    const { rental } = this.props;
+    console.log(rental);
     if (rental._id) {
       return (
         <section id="rentalDetails">

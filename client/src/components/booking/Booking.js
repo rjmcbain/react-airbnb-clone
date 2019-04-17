@@ -2,11 +2,13 @@ import React, { Component } from "react";
 import DateRangePicker from "react-bootstrap-daterangepicker";
 import { ToastContainer, toast } from "react-toastify";
 import { getRangeOfDates } from "../../helpers/index";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import * as moment from "moment";
 import BookingModal from "./BookingModal";
 import * as actions from "../../actions/actions";
 
-export default class Booking extends Component {
+class Booking extends Component {
   constructor() {
     super();
 
@@ -130,7 +132,10 @@ export default class Booking extends Component {
   }
 
   render() {
-    const { rental } = this.props;
+    const {
+      rental,
+      auth: { isAuth }
+    } = this.props;
     const { startAt, endAt, guests } = this.state.proposedBooking;
 
     return (
@@ -140,44 +145,56 @@ export default class Booking extends Component {
           ${rental.dailyRate}
           <span className="booking-per-night"> per night</span>
         </h3>
-        <hr />
-        <div className="form-group">
-          <label htmlFor="dates">Dates</label>
-          <DateRangePicker
-            onApply={this.handleApply}
-            isInvalidDate={this.checkInvalidDates}
-            opens="left"
-            containerStyles={{ display: "block" }}
+        {!isAuth && (
+          <Link
+            className="btn btn-bwm btn-confirm btn-block"
+            to={{ pathname: "/login" }}
           >
-            <input
-              ref={this.dateRef}
-              id="dates"
-              type="text"
-              className="form-control"
-            />
-          </DateRangePicker>
-        </div>
-        <div className="form-group">
-          <label htmlFor="guests">Guests</label>
-          <input
-            onChange={event => {
-              this.selectGuests(event);
-            }}
-            value={guests}
-            type="number"
-            className="form-control"
-            id="guests"
-            aria-describedby="guests"
-            placeholder=""
-          />
-        </div>
-        <button
-          disabled={!startAt || !endAt || !guests}
-          onClick={() => this.confirmProposedData()}
-          className="btn btn-bwm btn-confirm btn-block"
-        >
-          Reserve place now
-        </button>
+            Login To Book
+          </Link>
+        )}
+        {isAuth && (
+          <React.Fragment>
+            <hr />
+            <div className="form-group">
+              <label htmlFor="dates">Dates</label>
+              <DateRangePicker
+                onApply={this.handleApply}
+                isInvalidDate={this.checkInvalidDates}
+                opens="left"
+                containerStyles={{ display: "block" }}
+              >
+                <input
+                  ref={this.dateRef}
+                  id="dates"
+                  type="text"
+                  className="form-control"
+                />
+              </DateRangePicker>
+            </div>
+            <div className="form-group">
+              <label htmlFor="guests">Guests</label>
+              <input
+                onChange={event => {
+                  this.selectGuests(event);
+                }}
+                value={guests}
+                type="number"
+                className="form-control"
+                id="guests"
+                aria-describedby="guests"
+                placeholder=""
+              />
+            </div>
+            <button
+              disabled={!startAt || !endAt || !guests}
+              onClick={() => this.confirmProposedData()}
+              className="btn btn-bwm btn-confirm btn-block"
+            >
+              Reserve place now
+            </button>
+          </React.Fragment>
+        )}
         <hr />
         <p className="booking-note-title">
           People are interested in this house
@@ -197,3 +214,11 @@ export default class Booking extends Component {
     );
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    auth: state.auth
+  };
+}
+
+export default connect(mapStateToProps)(Booking);

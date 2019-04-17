@@ -5,11 +5,16 @@ import { toUpperCase, rentalType } from "../../../helpers";
 
 export default function RentalDetailInfo(props) {
   const rental = props.rental;
+  console.log(rental);
   return (
     <div className="rental">
       <h2 className={`rental-type ${rental.category}`}>
         {rentalType(rental.shared)} {rental.category}
       </h2>
+      <div className="rental-owner">
+        <img src="https://i.imgur.com/XwEgSoh.jpg" alt="owner" />
+        <span>{rental.user[0].username}</span>
+      </div>
       <h1 className="rental-title">{rental.title}</h1>
       <h2 className="rental-city">{toUpperCase(rental.city)}</h2>
       <div className="rental-room-info">
