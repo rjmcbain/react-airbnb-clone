@@ -137,6 +137,12 @@ export const getUserRentals = () => {
   );
 };
 
+export const deleteRental = rentalId => {
+  return axiosInstance
+    .delete(`/rentals/${rentalId}`)
+    .then(res => res.data, err => Promise.reject(err.response.data.errors));
+};
+
 // AUTH ACTION ----------------
 
 const loginSuccess = () => {

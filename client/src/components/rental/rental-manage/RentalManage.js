@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import * as actions from "../../../actions/actions";
 import RentalManageCard from "./RentalManageCard";
+import RentalManageModal from "./RentalManageModal";
+import { ToastContainer, toast } from "react-toastify";
 
 export default class RentalManage extends Component {
   constructor() {
@@ -12,6 +14,8 @@ export default class RentalManage extends Component {
       errors: [],
       isFetching: false
     };
+
+    this.deleteRental = this.deleteRental.bind(this);
   }
 
   componentWillMount() {
@@ -29,18 +33,43 @@ export default class RentalManage extends Component {
 
   renderRentalCards(rentals) {
     return rentals.map((rental, index) => (
-      <RentalManageCard key={index} rental={rental} />
+      <RentalManageCard
+        modal={<RentalManageModal bookings={rental.bookings} />}
+        key={index}
+        rental={rental}
+        rentalIndex={index}
+        deleteRentalCb={this.deleteRental}
+      />
     ));
   }
 
+  deleteRental(rentalId, rentalIndex) {
+    actions.deleteRental(rentalId).then(
+      () => {
+        this.deleteRentalFromList(rentalIndex);
+      },
+      errors => {
+        toast.error(errors[0].detail);
+      }
+    );
+  }
+
+  deleteRentalFromList(rentalIndex) {
+    const userRentals = this.state.userRentals.splice();
+
+    userRentals.splice(rentalIndex, 1);
+    this.setState({ userRentals });
+  }
+
   render() {
-    const { userRentals } = this.state;
+    const { userRentals, isFetching } = this.state;
 
     return (
       <section id="userRentals">
+        <ToastContainer />
         <h1 className="page-title">My Rentals</h1>
         <div className="row">{this.renderRentalCards(userRentals)}</div>
-        {!this.state.isFetching && userRentals.length === 0 && (
+        {!isFetching && userRentals.length === 0 && (
           <div className="alert alert-warning">
             You dont have any rentals currenty created. If you want advertised
             your property please follow this link.

@@ -34,7 +34,8 @@ class RentalManageModal extends Component {
         <p>
           <span>Total Price:</span> ${booking.totalPrice}
         </p>
-        <hr />
+        {/* index: {index + 1} , booking.length : {bookings.length} */}
+        {index + 1 !== bookings.length && <hr />}
       </React.Fragment>
     ));
   }
