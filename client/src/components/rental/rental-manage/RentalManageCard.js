@@ -15,7 +15,6 @@ class RentalManageCard extends React.Component {
     this.setState({
       wantDelete: true
     });
-    console.log(this.state);
   }
 
   closeDeleteMenu() {
@@ -31,8 +30,9 @@ class RentalManageCard extends React.Component {
   }
 
   render() {
-    const { rental, rentalIndex, modal } = this.props;
+    const { rental, modal, rentalIndex } = this.props;
     const { wantDelete } = this.state;
+
     const deleteClass = wantDelete ? "toBeDeleted" : "";
 
     return (
@@ -50,25 +50,39 @@ class RentalManageCard extends React.Component {
           <div className="card-footer text-muted">
             Created at {pretifyDate(rental.createdAt)}
             {!wantDelete && (
-              <button
-                className="btn btn-danger"
-                onClick={() => {
-                  this.showDeleteMenu();
-                }}
-              >
-                Delete
-              </button>
+              <React.Fragment>
+                <button
+                  onClick={() => {
+                    this.showDeleteMenu();
+                  }}
+                  className="btn btn-danger"
+                >
+                  {" "}
+                  Delete{" "}
+                </button>
+                <Link
+                  className="btn btn-warning"
+                  to={{
+                    pathname: `/rentals/${rental._id}/edit`,
+                    state: { isUpdate: true }
+                  }}
+                >
+                  {" "}
+                  Edit{" "}
+                </Link>
+              </React.Fragment>
             )}
             {wantDelete && (
               <div className="delete-menu">
-                Confirm Delete?
+                Do you confirm?
                 <button
-                  className="btn btn-danger"
                   onClick={() => {
                     this.deleteRental(rental._id, rentalIndex);
                   }}
+                  className="btn btn-danger"
                 >
-                  Yes
+                  {" "}
+                  Yes{" "}
                 </button>
                 <button
                   onClick={() => {
@@ -76,7 +90,8 @@ class RentalManageCard extends React.Component {
                   }}
                   className="btn btn-success"
                 >
-                  No
+                  {" "}
+                  No{" "}
                 </button>
               </div>
             )}

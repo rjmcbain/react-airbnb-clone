@@ -13,7 +13,7 @@ export default function RentalDetailInfo(props) {
       </h2>
       <div className="rental-owner">
         <img src="https://i.imgur.com/XwEgSoh.jpg" alt="owner" />
-        <span>{rental.user[0].username}</span>
+        <span>{rental.user.username}</span>
       </div>
       <h1 className="rental-title">{rental.title}</h1>
       <h2 className="rental-city">{toUpperCase(rental.city)}</h2>

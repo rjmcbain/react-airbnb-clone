@@ -1,7 +1,7 @@
 {
   "rentals": [
     {
-      "title": "Nice view on ocean",
+      "title": "Nice view of ocean",
       "city": "San Francisco",
       "street": "Main street",
       "category": "condo",
@@ -12,7 +12,7 @@
       "dailyRate": 43
     },
     {
-      "title": "Modern apartment in center",
+      "title": "Modern apartment near Central Park",
       "city": "New York",
       "street": "Time Square",
       "category": "apartment",
@@ -23,7 +23,7 @@
       "dailyRate": 11
     },
     {
-      "title": "Old house in nature",
+      "title": "Old house in the forest",
       "city": "Spisska Nova Ves",
       "street": "Banicka 1",
       "category": "house",

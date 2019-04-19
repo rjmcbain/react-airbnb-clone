@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const config = require("./config/dev");
 const Rental = require("./models/rental");
 const FakeDb = require("./models/fake-db");
+const path = require("path");
 
 const rentalRoutes = require("./routes/rentals");
 const userRoutes = require("./routes/users");
@@ -27,6 +28,13 @@ app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/bookings", bookingRoutes);
 
 // app.get("/", (req, res) => res.send("Hello World"));
+
+const appPath = path.join(__dirname, "..", "./client/build");
+app.use(express.static(appPath));
+
+app.get("*", function(req, res) {
+  res.sendFile(path.resolve(appPath, "index.html"));
+});
 
 const PORT = process.env.PORT || 3001;
 

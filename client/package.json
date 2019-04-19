@@ -27,10 +27,10 @@
     "redux": "^4.0.1",
     "redux-form": "^8.1.0",
     "redux-thunk": "^2.3.0",
-    "titleize": "^2.0.0"
+    "titleize": "^1.0.1"
   },
   "scripts": {
-    "build-css": "node-sass-chokidar ,/src -o ./src",
+    "build-css": "node-sass-chokidar ./src -o ./src",
     "watch-css": "npm run build-css && node-sass-chokidar ./src -o ./src --watch --recursive",
     "start-js": "react-scripts start",
     "start": "npm-run-all -p watch-css start-js",
