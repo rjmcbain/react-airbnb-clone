@@ -55,9 +55,9 @@ export default class RentalManage extends Component {
   }
 
   deleteRentalFromList(rentalIndex) {
-    const userRentals = this.state.userRentals.splice();
-
+    const userRentals = this.state.userRentals.slice();
     userRentals.splice(rentalIndex, 1);
+
     this.setState({ userRentals });
   }
 

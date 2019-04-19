@@ -22,7 +22,7 @@ class Header extends React.Component {
     }
     return (
       <React.Fragment>
-        <Link to="/login" className="nav-item nav-link active">
+        <Link to="/login" className="nav-item nav-link">
           Login <span className="sr-only">(current)</span>
         </Link>
         <Link to="/register" className="nav-item nav-link">
