@@ -17,17 +17,20 @@ exports.createBooking = function(req, res) {
       if (err) {
         return res.status(422).send({ errors: normalizeErrors(err.errors) });
       }
+
       if (foundRental.user.id === user.id) {
-        res.status(422).send({
-          errors: [
-            {
-              title: "Invalid User!",
-              detail: "Cannot create booking on your rental"
-            }
-          ]
-        });
+        return res
+          .status(422)
+          .send({
+            errors: [
+              {
+                title: "Invalid User!",
+                detail: "Cannot create booking on your Rental!"
+              }
+            ]
+          });
       }
-      // Check here for valid booking
+
       if (isValidBooking(booking, foundRental)) {
         booking.user = user;
         booking.rental = foundRental;
@@ -39,25 +42,28 @@ exports.createBooking = function(req, res) {
               .status(422)
               .send({ errors: normalizeErrors(err.errors) });
           }
+
           foundRental.save();
           User.update(
             { _id: user.id },
             { $push: { bookings: booking } },
             function() {}
           );
+
+          return res.json({ startAt: booking.startAt, endAt: booking.endAt });
         });
-        return res.json({ startAt: booking.startAt, endAt: booking.endAt });
       } else {
-        res.status(422).send({
-          errors: [
-            {
-              title: "Invalid Booking!",
-              detail: "Chosen dates are already taken!"
-            }
-          ]
-        });
+        return res
+          .status(422)
+          .send({
+            errors: [
+              {
+                title: "Invalid Booking!",
+                detail: "Choosen dates are already taken!"
+              }
+            ]
+          });
       }
-      return res.json({ booking, foundRental });
     });
 };
 
@@ -70,28 +76,26 @@ exports.getUserBookings = function(req, res) {
       if (err) {
         return res.status(422).send({ errors: normalizeErrors(err.errors) });
       }
+
       return res.json(foundBookings);
     });
 };
 
-function isValidBooking(proposeBooking, rental) {
+function isValidBooking(proposedBooking, rental) {
   let isValid = true;
 
   if (rental.bookings && rental.bookings.length > 0) {
     isValid = rental.bookings.every(function(booking) {
-      const proposedStart = moment(proposeBooking.startAt);
-      const proposedEnd = moment(proposeBooking.endAt);
+      const proposedStart = moment(proposedBooking.startAt);
+      const proposedEnd = moment(proposedBooking.endAt);
+
       const actualStart = moment(booking.startAt);
       const actualEnd = moment(booking.endAt);
 
-      if (
+      return (
         (actualStart < proposedStart && actualEnd < proposedStart) ||
         (proposedEnd < actualEnd && proposedEnd < actualStart)
-      ) {
-        return true;
-      } else {
-        return false;
-      }
+      );
     });
   }
 

@@ -20,13 +20,15 @@ export default class RentalManage extends Component {
 
   componentWillMount() {
     this.setState({ isFetching: true });
-
-    actions
-      .getUserRentals()
-      .then(
-        userRentals => this.setState({ userRentals, isFetching: false }),
-        errors => this.setState({ errors, isFetching: false })
-      );
+    actions.getUserRentals().then(
+      userRentals => {
+        this.setState({ userRentals, isFetching: false });
+        console.log("STATE: ", this.state.userRentals);
+      },
+      errors => {
+        this.setState({ errors, isFetching: false });
+      }
+    );
   }
 
   renderRentalCards(rentals) {
@@ -42,18 +44,20 @@ export default class RentalManage extends Component {
   }
 
   deleteRental(rentalId, rentalIndex) {
-    actions
-      .deleteRental(rentalId)
-      .then(
-        () => this.deleteRentalFromList(rentalIndex),
-        errors => toast.error(errors[0].detail)
-      );
+    actions.deleteRental(rentalId).then(
+      () => {
+        this.deleteRentalFromList(rentalIndex);
+      },
+      errors => {
+        toast.error(errors[0].detail);
+      }
+    );
   }
 
   deleteRentalFromList(rentalIndex) {
-    const userRentals = this.state.userRentals.slice();
-    userRentals.splice(rentalIndex, 1);
+    const userRentals = this.state.userRentals.splice();
 
+    userRentals.splice(rentalIndex, 1);
     this.setState({ userRentals });
   }
 
