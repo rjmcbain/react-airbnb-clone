@@ -13,9 +13,11 @@ const bookingRoutes = require("./routes/bookings");
 mongoose
   .connect(config.DB_URI, { useNewUrlParser: true })
   .then(() => {
-    const fakeDb = new FakeDb();
-    // fakeDb.seedDb();
-    console.warn("MongoDB Connected");
+    if (process.env.NODE_ENV !== "production") {
+      const fakeDb = new FakeDb();
+      // fakeDb.seedDb();
+      console.warn("MongoDB Connected");
+    }
   })
   .catch(err => console.error(err));
 
@@ -29,12 +31,14 @@ app.use("/api/v1/bookings", bookingRoutes);
 
 // app.get("/", (req, res) => res.send("Hello World"));
 
-const appPath = path.join(__dirname, "..", "./client/build");
-app.use(express.static(appPath));
+if (process.env.NODE_ENV === "production") {
+  const appPath = path.join(__dirname, "..", "./client/build");
+  app.use(express.static(appPath));
 
-app.get("*", function(req, res) {
-  res.sendFile(path.resolve(appPath, "index.html"));
-});
+  app.get("*", function(req, res) {
+    res.sendFile(path.resolve(appPath, "index.html"));
+  });
+}
 
 const PORT = process.env.PORT || 3001;
 
